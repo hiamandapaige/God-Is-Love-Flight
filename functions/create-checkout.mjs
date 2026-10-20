@@ -31,18 +31,24 @@ export default async (req) => {
   const params = new URLSearchParams();
   let subtotal = 0;
   let i = 0;
+  const summary = [];
   for (const entry of cart) {
     const product = PRODUCTS.find((p) => p.id === entry?.productId);
     const qty = Math.floor(Number(entry?.qty));
     if (!product || !Number.isFinite(qty) || qty < 1 || qty > MAX_QTY) {
       return json(400, { error: 'Something in your cart is no longer available. Please refresh the page and try again.' });
     }
-    const options = clean(entry.options, 200);
+    const options = clean(entry.options, 250);
+    // The chosen colors / scent go right in the item name, so they show on the
+    // Stripe checkout page, the customer's receipt, and the payment in the dashboard.
+    const itemName = options ? `${product.name} (${options})` : product.name;
     params.append(`line_items[${i}][quantity]`, String(qty));
     params.append(`line_items[${i}][price_data][currency]`, 'usd');
     params.append(`line_items[${i}][price_data][unit_amount]`, String(cents(product.price)));
-    params.append(`line_items[${i}][price_data][product_data][name]`, product.name);
-    if (options) params.append(`line_items[${i}][price_data][product_data][description]`, options);
+    params.append(`line_items[${i}][price_data][product_data][name]`, itemName);
+    // Also saved as "Item 1", "Item 2"... in the payment's details in the dashboard.
+    params.append(`payment_intent_data[metadata][item_${i + 1}]`, `${qty}x ${itemName}`.slice(0, 500));
+    summary.push(`${qty}x ${itemName}`);
     subtotal += cents(product.price) * qty;
     i++;
   }
@@ -61,9 +67,14 @@ export default async (req) => {
   params.append('cancel_url', `${site}/shop/cart`);
   params.append('phone_number_collection[enabled]', 'true');
   params.append('billing_address_collection', 'auto');
+  // Ask for a US shipping address. It shows under "Shipping" on the payment.
+  params.append('shipping_address_collection[allowed_countries][0]', 'US');
+  // The description is the first line you see on a payment in the dashboard.
+  const description = [summary.join(' | '), notes && `Notes: ${notes}`].filter(Boolean).join(' || ');
+  params.append('payment_intent_data[description]', description.slice(0, 1000));
   if (notes) {
     params.append('metadata[order_notes]', notes);
-    params.append('payment_intent_data[description]', `Order notes: ${notes}`.slice(0, 500));
+    params.append('payment_intent_data[metadata][order_notes]', notes);
   }
 
   const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
