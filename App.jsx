@@ -8,6 +8,7 @@ import Home from './Home';
 import Shop from './Shop';
 import ProductDetail from './ProductDetail';
 import CartPage from './CartPage';
+import OrderConfirmed from './OrderConfirmed';
 import ShopLayout from './ShopLayout';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/shop/product/:productId" element={<ProductDetail />} />
             <Route path="/shop/cart" element={<CartPage />} />
+            <Route path="/shop/order-confirmed" element={<OrderConfirmed />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

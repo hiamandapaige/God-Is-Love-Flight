@@ -2,6 +2,9 @@
   command = "npm run fetch-media && npm run build"
   publish = "dist"
 
+[functions]
+  directory = "functions"
+
 [build.environment]
   NODE_VERSION = "20"
 
