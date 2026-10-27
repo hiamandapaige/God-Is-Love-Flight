@@ -55,7 +55,7 @@ export default function Hero() {
             <span className="h-px w-12 sm:w-20" style={{ background: `linear-gradient(to left, transparent, ${VERSE_RED})` }} />
           </div>
           <blockquote
-            className="mt-4 font-display italic text-lg sm:text-2xl leading-relaxed"
+            className="mt-4 font-display italic text-lg sm:text-xl"
             style={{ color: VERSE_RED, textShadow: '0 1px 12px rgba(0,0,0,0.65)' }}
           >
             &ldquo;{VERSE.text}&rdquo;
