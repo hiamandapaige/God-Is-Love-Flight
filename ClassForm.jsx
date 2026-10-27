@@ -76,7 +76,7 @@ export default function ClassForm() {
         </div>
 
         <p className="mt-8 text-center text-sm text-muted-foreground">
-          Booking a wedding, reunion, or custom project? Call or text{' '}
+          Questions about the class or a custom aerial project? Call or text{' '}
           <a href="tel:+16015737624" className="text-gold hover:underline">(601) 573-7624</a>.
         </p>
       </div>
