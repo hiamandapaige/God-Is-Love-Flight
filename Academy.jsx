@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, Clock, MapPin, Radio } from 'lucide-react';
 import { Image } from './image';
+import TrustNotice from './TrustNotice';
 
 const CHECKLIST = [
   'Preflight safety briefing and airspace check',
@@ -57,7 +58,9 @@ export default function Academy() {
               <MapPin size={14} className="text-gold" /> Jackson, MS fly zone · equipment provided
             </div>
 
-            <a href="#apply" className="mt-8 h-12 w-full inline-flex items-center justify-center rounded-full bg-gold px-8 font-mono-tech text-sm uppercase tracking-widest text-gold-foreground hover:animate-hover-stabilize gold-glow transition">
+            <TrustNotice className="mt-6" />
+
+            <a href="#apply" className="mt-6 h-12 w-full inline-flex items-center justify-center rounded-full bg-gold px-8 font-mono-tech text-sm uppercase tracking-widest text-gold-foreground hover:animate-hover-stabilize gold-glow transition">
               Apply for Class
             </a>
           </div>

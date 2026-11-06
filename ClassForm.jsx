@@ -1,10 +1,17 @@
 import React from 'react';
-import { CalendarCheck, MapPin, Plane, Clock, ExternalLink } from 'lucide-react';
+import { CalendarCheck, MapPin, Plane, Clock, ExternalLink, ShieldCheck } from 'lucide-react';
+import TrustNotice, { TRUST_LINK } from './TrustNotice';
 
 // The Calendly booking page. Opens in a new tab.
 const BOOKING_LINK = 'https://calendly.com/jhuffman38/30min';
 
 const STEPS = [
+  {
+    icon: ShieldCheck,
+    title: 'Pass the free safety test',
+    text: 'Complete the FAA TRUST drone safety test online before class. It’s free, takes 10–15 minutes, and you can’t fail.',
+    link: { href: TRUST_LINK, label: 'Take the test' },
+  },
   {
     icon: CalendarCheck,
     title: 'Pick your time',
@@ -35,8 +42,8 @@ export default function ClassForm() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-3">
-          {STEPS.map(({ icon: Icon, title, text }, i) => (
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map(({ icon: Icon, title, text, link }, i) => (
             <div key={title} className="glass-panel rounded-3xl p-7">
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-sky/15">
@@ -46,6 +53,11 @@ export default function ClassForm() {
               </div>
               <h3 className="mt-5 font-mono-tech font-bold text-lg">{title}</h3>
               <p className="mt-2 text-sm text-foreground/70 leading-relaxed">{text}</p>
+              {link && (
+                <a href={link.href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 font-mono-tech text-xs uppercase tracking-widest text-sky hover:text-gold transition">
+                  {link.label} <ExternalLink size={13} />
+                </a>
+              )}
             </div>
           ))}
         </div>
@@ -56,6 +68,8 @@ export default function ClassForm() {
             <span className="flex items-center gap-2 text-sky"><Clock size={15} /> 1 hr 15 min</span>
             <span className="flex items-center gap-2 text-foreground/70"><MapPin size={15} className="text-gold" /> Jackson, MS</span>
           </div>
+
+          <TrustNotice className="mt-8 max-w-xl mx-auto" />
 
           <a
             href={BOOKING_LINK}
